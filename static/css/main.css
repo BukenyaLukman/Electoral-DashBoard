@@ -1,0 +1,18 @@
+#logo{
+		
+}
+body{
+	background-color: #ebeff5;
+	padding: 0 10 10 10px;
+	margin-left: 5px;
+	margin-right: 5px;
+}
+#total-results{
+	background-color: #4cb4c7;
+}
+#results-delivered{
+	background-color: #7abecc;
+}
+#results-pending{
+	background-color: #7CD1C0;
+}
