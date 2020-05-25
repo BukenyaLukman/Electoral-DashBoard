@@ -19,4 +19,5 @@ admin.site.register(User_permissions)
 admin.site.register(User_profile)
 admin.site.register(Users)
 admin.site.register(Users_session)
+admin.site.register(Tag)
 
