@@ -3,8 +3,6 @@ from django.db import models
 # Create your models here.
 
 class Constituency(models.Model):
-	#constituency_id = models.IntegerField(null=True)
-	#region_id = models.IntegerField(null=True)
 	constituency_name = models.CharField(max_length=200,null=True)
 	constituency_polling_stations = models.IntegerField(null=True)
 	constituency_female_voters = models.CharField(max_length=200,null=True)
@@ -13,7 +11,6 @@ class Constituency(models.Model):
 	constituency_popn = models.IntegerField(null=True)
 	languages = models.CharField(max_length=200,null=True)
 	political_history = models.CharField(max_length=6500,null=True)
-	#category_id = models.IntegerField(null=True)
 
 	def __str__(self):
 		return self.constituency_name
@@ -23,7 +20,6 @@ class Constituency(models.Model):
 
 class Constituency_category(models.Model):
 	constituency = models.ForeignKey(Constituency,null=True,blank=True,on_delete=models.SET_NULL)
-	#category_id = models.IntegerField(null=True)
 	cons_category_name = models.CharField(max_length=100,null=True)
 
 	def __str__(self):
@@ -61,7 +57,6 @@ class Groups(models.Model):
 			('ACTIVE','ACTIVE'),
 			('NOT ACTIVE','NOT ACTIVE')
 		)
-	#groupId = models.IntegerField(null=True)
 	groupName = models.CharField(max_length=100,null=True)
 	status = models.CharField(max_length=50,null=True,choices=STATUS)
 
@@ -73,7 +68,6 @@ class Groups(models.Model):
 
 
 class Parties(models.Model):
-	#part_id = models.IntegerField(null=True)
 	party_name = models.CharField(max_length=100,null=True)
 	party_create_date = models.DateTimeField(max_length=50,null=True)
 
@@ -182,6 +176,7 @@ class Politicians(models.Model):
 	first_name = models.CharField(max_length=100,null=True)
 	last_name = models.CharField(max_length=100,null=True)
 	other_name = models.CharField(max_length=100,null=True)
+	image = models.ImageField(null=True,blank=True)
 	DOB = models.DateTimeField(null=True)
 	tags = models.ManyToManyField(Tag)
 	
