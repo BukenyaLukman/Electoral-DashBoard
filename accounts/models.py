@@ -96,9 +96,6 @@ class Permissions(models.Model):
 		verbose_name_plural = "Permissions"
 
 class Permissions_map(models.Model):
-	#permissionMapId = models.IntegerField(null=True)
-	#groupId = models.IntegerField(null=True)
-	#permissionId = models.IntegerField(null=True)
 	createdData = models.DateTimeField(auto_now_add=True,null=True)
 	updateData = models.CharField(max_length=100,null=True)
 	deleteData = models.CharField(max_length=100,null=True)
@@ -120,6 +117,15 @@ class Politician_activities(models.Model):
 		return self.activity_desc
 	class Meta:
 		verbose_name_plural = "Politician_activities"
+
+
+class Politician_Category(models.Model):
+	categoryName = models.CharField(max_length=100,null=True)
+	def __str__(self):
+		return self.categoryName
+
+	class Meta:
+		verbose_name_plural = "Politician_Category"
 
 class Politician_education(models.Model):
 	
@@ -159,9 +165,7 @@ class Tag(models.Model):
 		return self.name
 
 class Politicians(models.Model):  
-	#politician_id = models.IntegerField(null=True)
-	#position_id = models.IntegerField(null=True)
-	#party_id = models.IntegerField(null=True)
+	category = models.ForeignKey(Politician_Category,null=True,blank=True,on_delete=models.SET_NULL)
 	region = models.ForeignKey(Regions,null=True,blank=True,on_delete=models.SET_NULL)
 	education = models.ForeignKey(Politician_education,null=True,blank=True,on_delete=models.SET_NULL)
 	party = models.ForeignKey(Parties,null=True,blank=True,on_delete=models.SET_NULL)
@@ -202,7 +206,6 @@ class Systemlogs(models.Model):
 		verbose_name_plural = "Systemlogs"
 class User_permissions(models.Model):
 	moduleName = models.CharField(max_length=50,null=True)
-	#groupId = models.IntegerField(null=True)
 	fileName = models.CharField(max_length=100, null=True)
 	createData = models.CharField(max_length=50,null=True)
 	updateData = models.CharField(max_length=50,null=True)
