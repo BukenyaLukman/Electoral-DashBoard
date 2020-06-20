@@ -3,6 +3,10 @@ from django.db import models
 # Create your models here.
 
 class Constituency(models.Model):
+	DELETE_STATUS = (
+			('DELETED','DELETED'),
+			('NOT DELETED','NOT DELETED'),
+		)
 	constituency_name = models.CharField(max_length=200,null=True)
 	constituency_polling_stations = models.IntegerField(null=True)
 	constituency_female_voters = models.CharField(max_length=200,null=True)
@@ -11,7 +15,8 @@ class Constituency(models.Model):
 	constituency_popn = models.IntegerField(null=True)
 	languages = models.CharField(max_length=200,null=True)
 	political_history = models.CharField(max_length=6500,null=True)
-
+	delete_status = models.CharField(max_length=100, null=True,choices=DELETE_STATUS)
+	constituency_update_date = models.DateTimeField(auto_now_add=True,null=True)
 	def __str__(self):
 		return self.constituency_name
 
@@ -29,23 +34,35 @@ class Constituency_category(models.Model):
 
 
 class Country(models.Model):
-	
-	#country_id = models.IntegerField(null=True)
 	country_name = models.CharField(max_length=50,null=True)
 	country_polling_stations = models.IntegerField(null=True)
 	country_female_voters = models.IntegerField(null=True)
 	country_male_voters = models.IntegerField(null=True)
-	country_add_date = models.DateTimeField(auto_now_add=True,null=True)
+	country_create_date = models.DateTimeField(auto_now_add=True,null=True)
+	country_popn = models.IntegerField(null=True)
+	country_languages = models.CharField(max_length=500,null=True, blank=True)
+	country_political_history = models.CharField(max_length=1000,null=True, blank=True)
+	country_update_date = models.DateTimeField(auto_now_add=True,null=True,blank=True)
+
 
 	def __str__(self):
 		return self.country_name
 	class Meta:
 		verbose_name_plural = "Country"
 
+class Department(models.Model):
+	department_name = models.CharField(max_length=500,null=True, blank=True)
+	dept_create_date = models.DateTimeField(auto_now_add=True,null=True)
+	dept_update_date = models.DateTimeField(null=True,blank=True)
+
+	def __str__(self):
+		return self.department_name
+
+
 class Electoral_positions(models.Model):
-	#position_id = models.IntegerField(null=True)
 	position_name = models.CharField(max_length=100,null=True)
 	position_create_date = models.DateTimeField(auto_now_add=True,null=True)
+	position_update_date = models.DateTimeField(null=True)
 
 	def __str__(self):
 		return self.position_name
@@ -68,9 +85,9 @@ class Groups(models.Model):
 
 
 class Parties(models.Model):
-	party_name = models.CharField(max_length=100,null=True)
-	party_create_date = models.DateTimeField(max_length=50,null=True)
-
+	party_name = models.CharField(max_length=100,null=True,blank=True)
+	party_create_date = models.DateTimeField(auto_now_add=True,null=True,blank=True)
+	party_update_date = models.DateTimeField(auto_now_add=True,null=True,blank=True)
 
 	def __str__(self):
 		return self.party_name
@@ -79,7 +96,6 @@ class Parties(models.Model):
 		verbose_name_plural = "Parties"
 
 class Permissions(models.Model):
-	#permissionId = models.IntegerField(null=True)
 	moduleName = models.CharField(max_length=100,null=True)
 	fileName = models.CharField(max_length=100,null=True)
 	createdAt = models.DateTimeField(auto_now_add=True,null=True)
@@ -103,8 +119,6 @@ class Permissions_map(models.Model):
 		verbose_name_plural = "Permissions_map"
 
 class Politician_activities(models.Model):
-	#activity_id = models.IntegerField(null=True)
-	#politician_id = models.IntegerField(null=True)
 	activity_desc = models.CharField(max_length=1000,null=True)
 
 	def __str__(self):
@@ -120,15 +134,19 @@ class Politician_Category(models.Model):
 
 	class Meta:
 		verbose_name_plural = "Politician_Category"
+class category(models.Model):
+	categoryName = models.CharField(max_length=500, null=True)
+
+	def __str__(self):
+		return self.categoryName
+
 
 class Politician_education(models.Model):
-	
-	#education_id = models.IntegerField(null=True)
-	#politician_id = models.IntegerField(null=True)
 	school_name = models.CharField(max_length=100,null=True)
 	certificate_name = models.CharField(max_length=100,null=True)
 	date_from = models.DateTimeField(null=True)
 	date_to = models.DateTimeField(null=True)
+
 
 	def __str__(self):
 		return self.school_name
@@ -138,8 +156,6 @@ class Politician_education(models.Model):
 
 
 class Regions(models.Model):
-	#region_id = models.IntegerField(null=True)
-	#country_id = models.IntegerField(null=True)
 	region_name = models.CharField(max_length=100,null=True)
 	region_polling_stations = models.IntegerField(null=True)
 	region_female_voters = models.IntegerField(null=True)
@@ -167,18 +183,26 @@ class Politicians(models.Model):
 	country = models.ForeignKey(Country,null=True,blank=True,on_delete=models.SET_NULL)
 	constituency = models.ForeignKey(Constituency,null=True,blank=True,on_delete=models.SET_NULL)
 	electoral_positions = models.ForeignKey(Electoral_positions,null=True,blank=True,on_delete=models.SET_NULL)
+
 	STATUS = (
 			('INCUMBENT','INCUMBENT'),
 			('FIRST TIME CONTESTANT','FIRST TIME CONTESTANT'),
 			('CONTESTED BEFORE','CONTESTED BEFORE')
 		)
+	MARITAL_STATUS = (
+		('MARRIED','MARRIED'),
+		('SINGLE','SINGLE'),
+		('DIVORCED','DIVORCED'),
+	)
 	politician_status = models.CharField(max_length=100,null=True,choices=STATUS)
 	first_name = models.CharField(max_length=100,null=True)
 	last_name = models.CharField(max_length=100,null=True)
 	other_name = models.CharField(max_length=100,null=True)
 	image = models.ImageField(null=True,blank=True)
 	DOB = models.DateTimeField(null=True)
-	tags = models.ManyToManyField(Tag)
+	marital_status = models.CharField(max_length=300,null=True,choices=MARITAL_STATUS)
+	children = models.CharField(max_length=300,null=True,blank=True)
+
 	
 
 	def __str__(self):
@@ -188,7 +212,6 @@ class Politicians(models.Model):
 
 
 class Systemlogs(models.Model):
-	#logId = models.IntegerField(null=True)
 	userId = models.IntegerField(null=True)
 	modelName = models.CharField(max_length=100,null=True)
 	action = models.CharField(max_length=100,null=True)
@@ -233,10 +256,8 @@ class User_profile(models.Model):
 		verbose_name_plural = "User_profile"
 
 class Users(models.Model):
-	#userId = models.IntegerField(null=True)
 	username = models.CharField(max_length=50,null=True)
 	password = password = models.CharField(max_length=50)
-	#groupId = models.IntegerField(null=True)
 	verificationCode = models.IntegerField(null=True)
 	verificationStatus = models.CharField(max_length=50,null=True)
 	verificationExpiry = models.DateTimeField(null=True)
@@ -249,6 +270,7 @@ class Users(models.Model):
 	secondaryEmail = models.EmailField(max_length=254,null=True)
 	DOB = models.DateTimeField(null=True)
 	regDate = models.DateTimeField(null=True)
+
 
 
 	def __str__(self):

@@ -20,5 +20,6 @@ admin.site.register(User_profile)
 admin.site.register(Users)
 admin.site.register(Politician_Category)
 admin.site.register(Users_session)
+admin.site.register(Department)
 admin.site.register(Tag)
 
