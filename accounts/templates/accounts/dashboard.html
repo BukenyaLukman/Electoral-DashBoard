@@ -8,15 +8,18 @@
 			<h5>POLITICIANS</h5>
 			<hr>
 			<div class="card card-body">
-				<a class="btn btn-primary btn-sm btn-block" href="">POLITICAL CATEGORIES</a>
-				<table>
+				<a class="btn btn-primary btn-sm btn-block" href="">ELECTORAL POSITIONS</a>
+				<table class="table table-sm">
 					<tr>
 						<th>CATEGORY</th>
-						<th>NAME</th>
+						<th>CONSTITUENCY</th>
 					</tr>
-					<tr>
-						<td></td>
-					</tr>
+					{% for category in categories %}
+						<tr>
+							<td>{{category.categoryName}}</td>
+							<td>{{category.constituency}}</td>
+						</tr>
+					{% endfor %}
 				</table>
 			</div>
 		</div>
@@ -33,9 +36,13 @@
 						<th>STATUS</th>
 						
 					</tr>
-					<tr>
-						<td></td>
-					</tr>
+					{% for politician in politicians %}
+						<tr>
+							<td>{{politician.first_name}} {{politician.last_name}}</td>
+							<td>{{politician.electoral_positions}}</td>
+							<td>{{politician.politician_status}}</td>
+						</tr>
+					{% endfor %}
 				</table>
 			</div>
 		</div>

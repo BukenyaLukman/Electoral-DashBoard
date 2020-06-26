@@ -1,12 +1,22 @@
 from django.db import models
 
-# Create your models here.
+
+
+class Constituency_category(models.Model):
+	cons_category_name = models.CharField(max_length=100,null=True)
+
+	def __str__(self):
+		return self.cons_category_name
+	class Meta:
+		verbose_name_plural = "Constituency_category"
+
 
 class Constituency(models.Model):
 	DELETE_STATUS = (
 			('DELETED','DELETED'),
 			('NOT DELETED','NOT DELETED'),
 		)
+	category = models.ForeignKey(Constituency_category,null=True,blank=True,on_delete=models.SET_NULL)
 	constituency_name = models.CharField(max_length=200,null=True)
 	constituency_polling_stations = models.IntegerField(null=True)
 	constituency_female_voters = models.CharField(max_length=200,null=True)
@@ -22,15 +32,6 @@ class Constituency(models.Model):
 
 	class Meta:
 		verbose_name_plural = "Constituency"
-
-class Constituency_category(models.Model):
-	constituency = models.ForeignKey(Constituency,null=True,blank=True,on_delete=models.SET_NULL)
-	cons_category_name = models.CharField(max_length=100,null=True)
-
-	def __str__(self):
-		return self.cons_category_name
-	class Meta:
-		verbose_name_plural = "Constituency_category"
 
 
 class Country(models.Model):
@@ -62,12 +63,12 @@ class Department(models.Model):
 class Electoral_positions(models.Model):
 	position_name = models.CharField(max_length=100,null=True)
 	position_create_date = models.DateTimeField(auto_now_add=True,null=True)
-	position_update_date = models.DateTimeField(null=True)
+	position_update_date = models.DateTimeField(auto_now_add=True,null=True)
 
 	def __str__(self):
 		return self.position_name
 	class Meta:
-		verbose_name_plural = "Positions"
+		verbose_name_plural = "Electoral Position"
 
 class Groups(models.Model):
 	STATUS = (
@@ -85,12 +86,12 @@ class Groups(models.Model):
 
 
 class Parties(models.Model):
-	party_name = models.CharField(max_length=100,null=True,blank=True)
+	party_name = models.CharField(max_length=300,null=True,blank=True)
 	party_create_date = models.DateTimeField(auto_now_add=True,null=True,blank=True)
 	party_update_date = models.DateTimeField(auto_now_add=True,null=True,blank=True)
 
 	def __str__(self):
-		return self.party_name
+		return str(self.party_name)
 
 	class Meta:
 		verbose_name_plural = "Parties"
@@ -112,14 +113,14 @@ class Permissions_map(models.Model):
 	viewData = models.CharField(max_length=100,null=True)
 	dateMapped = models.DateTimeField(null=True)
 
-	def __str__(self):
-		return str(self.createdData)
+	# def __str__(self):
+	# 	return str(self.createdData)
 
 	class Meta:
 		verbose_name_plural = "Permissions_map"
 
 class Politician_activities(models.Model):
-	activity_desc = models.CharField(max_length=1000,null=True)
+	activity_desc = models.CharField(max_length=500,null=True)
 
 	def __str__(self):
 		return self.activity_desc
@@ -128,6 +129,7 @@ class Politician_activities(models.Model):
 
 
 class Politician_Category(models.Model):
+	constituency = models.ForeignKey(Constituency_category,null=True,blank=True,on_delete=models.SET_NULL)
 	categoryName = models.CharField(max_length=100,null=True)
 	def __str__(self):
 		return self.categoryName
