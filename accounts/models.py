@@ -205,6 +205,16 @@ class Politicians(models.Model):
 	marital_status = models.CharField(max_length=300,null=True,choices=MARITAL_STATUS)
 	children = models.CharField(max_length=300,null=True,blank=True)
 
+	@property
+	def imageURL(self):
+		try:
+			url = self.image.url
+		except:
+			url = ''
+		return url
+		
+	
+
 	
 
 	def __str__(self):
