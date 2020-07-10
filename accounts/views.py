@@ -21,6 +21,6 @@ def candidates(request):
 def politicians(request,pk):
 	candidates = Politicians.objects.get(id=pk)
 	context = {'candidates':candidates}
-	return render(request,'accounts/politician.html')
+	return render(request,'accounts/politician.html',context)
 
 

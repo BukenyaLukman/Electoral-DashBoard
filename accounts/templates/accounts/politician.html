@@ -1,21 +1,24 @@
 {% extends 'base.html' %}
+{% load static %}
 {% block content %}
 <br>
 <div class="row">
+	
 	<div class="col-md">
 		<div class="card card-body">
-			<h5>POLITICIAN:</h5>
-			<hr>
-			<a class="btn btn-outline-info btn-sm btn-block" href="#">Update Politician</a>
-			<a class="btn btn-outline-info btn-sm btn-block" href="#">PLACE RESULTS</a>
+			<h5>{{candidates.first_name}} {{candidates.last_name}}</h5>
+			<!-- <hr> -->
+			<!-- <a class="btn btn-outline-info btn-sm btn-block" href="#">Update Politician</a>
+			<a class="btn btn-outline-info btn-sm btn-block" href="#">PLACE RESULTS</a> -->
+		<img class="thumbnail" alt="Responsive image" src="{{candidates.imageURL}}">
 		</div>
 	</div>
 	<div class="col-md">
 		<div class="card card-body">
 			<h5>POLITICIAN DETAILS</h5>
 			<hr>
-			<p>PROFESSION:</p>
-			<p>CONSTITUENCY:</p>
+			<p>PROFESSION <br><button class="btn btn-outline-info btn-sm btn-block">{{candidates.activities}}</button></p>
+			<p>CONSTITUENCY <br><button class="btn btn-outline-info btn-sm btn-block">{{candidates.constituency}}</button></p>
 		</div>
 	</div>
 
@@ -26,10 +29,11 @@
 			<h1 style="text-align: center;padding: 10px;"></h1>
 		</div>
 	</div>
+	
 </div>
-<br>
-
-<div class="row">
+<!-- <br>
+ -->
+<!-- <div class="row">
 	<div class="col">
 		<div class="card card-body">
 			<form method="get">
@@ -37,7 +41,7 @@
 			</form>
 		</div>
 	</div>
-</div>
+</div> -->
 <br>
 
 <div class="row">
@@ -45,15 +49,21 @@
 		<div class="card card-body">
 			<table class="table table-sm">
 				<tr>
-					<th>Politician</th>
-					<th>Category</th>
-					<th>Terms in Office</th>
-					<th>Status</th>
-					<th>remove</th>
+					<th><button class="btn btn-outline-info btn-sm btn-block">POLITICIAN</button></th>
+					<th><button class="btn btn-outline-info btn-sm btn-block">CATEGORY</button></th>
+					<th><button class="btn btn-outline-info btn-sm btn-block">TERMS IN OFFICE</button></th>
+					<th><button class="btn btn-outline-info btn-sm btn-block">STATUS</button></th>
+					<th><button class="btn btn-outline-info btn-sm btn-block">MARITAL</button></th>
 				</tr>
+				
 				<tr>
+					<td>{{candidates.first_name}} {{candidates.last_name}}</td>
+					<td>{{candidates.category}}</td>
 					<td></td>
+					<td>{{candidates.politician_status}}</td>
+					<td>{{candidates.marital_status}}</td>
 				</tr>
+				
 			</table>
 		</div>
 	</div>
