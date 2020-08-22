@@ -1,7 +1,6 @@
 from django.db import models
 
 
-
 class Constituency_category(models.Model):
 	cons_category_name = models.CharField(max_length=100,null=True)
 
@@ -70,20 +69,6 @@ class Electoral_positions(models.Model):
 	class Meta:
 		verbose_name_plural = "Electoral Position"
 
-class Groups(models.Model):
-	STATUS = (
-			('ACTIVE','ACTIVE'),
-			('NOT ACTIVE','NOT ACTIVE')
-		)
-	groupName = models.CharField(max_length=100,null=True)
-	status = models.CharField(max_length=50,null=True,choices=STATUS)
-
-	def __str__(self):
-		return self.groupName
-
-	class Meta:
-		verbose_name_plural = "Groups"
-
 
 class Parties(models.Model):
 	party_name = models.CharField(max_length=300,null=True,blank=True)
@@ -96,28 +81,6 @@ class Parties(models.Model):
 	class Meta:
 		verbose_name_plural = "Parties"
 
-class Permissions(models.Model):
-	moduleName = models.CharField(max_length=100,null=True)
-	fileName = models.CharField(max_length=100,null=True)
-	createdAt = models.DateTimeField(auto_now_add=True,null=True)
-
-	def __str__(self):
-		return self.moduleName
-	class Meta:
-		verbose_name_plural = "Permissions"
-
-class Permissions_map(models.Model):
-	createdData = models.DateTimeField(auto_now_add=True,null=True)
-	updateData = models.CharField(max_length=100,null=True)
-	deleteData = models.CharField(max_length=100,null=True)
-	viewData = models.CharField(max_length=100,null=True)
-	dateMapped = models.DateTimeField(null=True)
-
-	# def __str__(self):
-	# 	return str(self.createdData)
-
-	class Meta:
-		verbose_name_plural = "Permissions_map"
 
 class Politician_activities(models.Model):
 	activity_desc = models.CharField(max_length=500,null=True)
@@ -126,6 +89,11 @@ class Politician_activities(models.Model):
 		return self.activity_desc
 	class Meta:
 		verbose_name_plural = "Politician_activities"
+
+class District(models.Model):
+	district = models.CharField(max_length=200,null=True)
+	def __str__(self):
+		return self.district
 
 
 class Politician_Category(models.Model):
@@ -199,7 +167,7 @@ class Politicians(models.Model):
 	politician_status = models.CharField(max_length=100,null=True,choices=STATUS)
 	first_name = models.CharField(max_length=100,null=True)
 	last_name = models.CharField(max_length=100,null=True)
-	other_name = models.CharField(max_length=100,null=True)
+	other_name = models.CharField(max_length=100,null=True,blank=True)
 	image = models.ImageField(null=True,blank=True)
 	DOB = models.DateTimeField(null=True)
 	marital_status = models.CharField(max_length=300,null=True,choices=MARITAL_STATUS)
@@ -223,29 +191,7 @@ class Politicians(models.Model):
 		verbose_name_plural = "Politician"
 
 
-class Systemlogs(models.Model):
-	userId = models.IntegerField(null=True)
-	modelName = models.CharField(max_length=100,null=True)
-	action = models.CharField(max_length=100,null=True)
-	message = models.CharField(max_length=100,null=True)
-	timeAccessed = models.DateTimeField(null=True)
 
-	def __str__(self):
-		return self.modelName
-	class Meta:
-		verbose_name_plural = "Systemlogs"
-class User_permissions(models.Model):
-	moduleName = models.CharField(max_length=50,null=True)
-	fileName = models.CharField(max_length=100, null=True)
-	createData = models.CharField(max_length=50,null=True)
-	updateData = models.CharField(max_length=50,null=True)
-	deleteData = models.CharField(max_length=50,null=True)
-	viewData = models.CharField(max_length=50,null=True)
-
-	def __str__(self):
-		return self.moduleName
-	class Meta:
-		verbose_name_plural = "Users_permissions"
 
 class User_profile(models.Model):
 	#userId = models.IntegerField(null=True)
@@ -298,5 +244,25 @@ class Users_session(models.Model):
 		return str(self.userId)
 	class Meta:
 		verbose_name_plural = "Users_session"
+
+
+## Votes
+class ElectionResult(models.Model):
+	pollingStation = models.CharField(max_length=200,null=True)
+	district = models.ForeignKey(District,null=True,blank=True,on_delete=models.SET_NULL)
+	Constituency = models.ForeignKey(Constituency,null=True,blank=True,on_delete=models.SET_NULL)
+	electoral_position = models.ForeignKey(Electoral_positions,null=True,blank=True,on_delete=models.SET_NULL)
+	VotesCasted = models.IntegerField(null=True)
+	InvalidVotes = models.IntegerField(null=True)
+	totalVotes = models.IntegerField(null=True)
+	CandidateName = models.ForeignKey(Politicians,null=True,blank=True,on_delete=models.SET_NULL)
+	votesObtained = models.IntegerField(null=True)
+	resultsForm = models.ImageField(null=True,blank=True)
+
+
+	def __str__(self):
+		return self.pollingStation
+
+
 
 

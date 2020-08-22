@@ -38,7 +38,7 @@
 					</tr>
 					{% for politician in politicians %}
 						<tr>
-							<td>{{politician.first_name}} {{politician.last_name}}</td>
+						<td><a class="btn btn-outline-info btn-sm btn-block" href="{% url 'politicians' politician.id %}">{{politician.first_name}} {{politician.last_name}}</a></td>
 							<td>{{politician.electoral_positions}}</td>
 							<td>{{politician.politician_status}}</td>
 						</tr>
